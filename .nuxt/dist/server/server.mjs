@@ -1,0 +1,1 @@
+export { default } from "file:///home/kofr/DoskochPraktikaFront-end/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"

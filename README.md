@@ -73,5 +73,7 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-# PraktikaFront-end
-# PraktikaFront-end
+# Призначення цього сайту
+Цей сайт створений для взаємодії з API, яка дозволяє зберігати та ділитись файлами, також пропону повну статистику щодо того чи іншого файла та усіх файлів користувача загалом
+# Ліцензія
+Цей сайт не є запатентованим, тому прошу вас, не крадіть його, дякую
