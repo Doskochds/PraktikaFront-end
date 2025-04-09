@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <NuxtLink to="/" class="logo">
-        <span class="text">FIle save site praktika</span>
+        <span class="text">Web-site for files on praktice</span>
       </NuxtLink>
 
 

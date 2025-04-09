@@ -2,7 +2,7 @@
   <footer class="bg-gray-100 py-4 shadow-inner">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <div v-if="loading" class="text-gray-600">
-        Перевірка статусу сервісу...
+        Перевірка статусу сервіса...
       </div>
       <div v-else-if="apiAvailable" class="text-green-600 font-medium">
         ✅ Сервіс доступний, усе готово для роботи
