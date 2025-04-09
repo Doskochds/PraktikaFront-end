@@ -52,7 +52,7 @@ const logout = () => {
 
 <style scoped>
 .header {
-  background: white;
+  background: rgba(222, 178, 178, 0.13);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   padding: 1rem 0;
   position: sticky;
@@ -69,7 +69,7 @@ const logout = () => {
   align-items: center;
 }
 
-ф.logo {
+.logo {
   font-size: 1.25rem;
   font-weight: 700;
   color: #333;
