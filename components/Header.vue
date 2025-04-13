@@ -5,7 +5,6 @@
         <span class="text">Web-site for files on praktice</span>
       </NuxtLink>
 
-
       <nav class="nav">
         <template v-if="user">
           <div class="user-menu">
@@ -21,8 +20,8 @@
           </div>
         </template>
         <template v-else>
-          <NuxtLink to="/login" class="nav-link">Увійти</NuxtLink>
-          <NuxtLink to="/register" class="nav-link register">Реєстрація</NuxtLink>
+          <button @click="$emit('openLoginModal')" class="nav-link">Увійти</button>
+          <button @click="$emit('openRegisterModal')" class="nav-link register">Реєстрація</button>
         </template>
       </nav>
     </div>
@@ -33,10 +32,7 @@
 const user = ref(null)
 const isMenuOpen = ref(false)
 
-
-onMounted(() => {
-
-})
+defineEmits(['openLoginModal', 'openRegisterModal'])
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
@@ -45,7 +41,6 @@ const toggleMenu = () => {
 const logout = () => {
   user.value = null
   isMenuOpen.value = false
-
   navigateTo('/')
 }
 </script>
@@ -87,6 +82,11 @@ const logout = () => {
   font-weight: 500;
   transition: color 0.2s;
   text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .nav-link:hover {
