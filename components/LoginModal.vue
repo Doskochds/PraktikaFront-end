@@ -5,7 +5,6 @@
       <h2 class="modal-title">Увійти</h2>
 
       <form @submit.prevent="handleSubmit" class="modal-form">
-
         <div class="form-group">
           <label for="login-email">Email</label>
           <input
@@ -19,7 +18,6 @@
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
         </div>
 
-        <!-- Пароль -->
         <div class="form-group">
           <label for="login-password">Пароль</label>
           <input
@@ -84,30 +82,28 @@ const handleSubmit = async () => {
   serverError.value = ''
 
   try {
-       await fetch('http://localhost:80/sanctum/csrf-cookie', {
-      credentials: 'include'
-    })
-
     const response = await fetch('http://localhost:80/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
       },
-      credentials: 'include', // Важливо для кук
-      body: JSON.stringify(form.value)
+      body: JSON.stringify({
+        email: form.value.email,
+        password: form.value.password
+      })
     })
 
     const data = await response.json()
 
     if (!response.ok) {
-      throw new Error(data.message || 'Помилка входу')
+      throw new Error(data.message || 'Невірні облікові дані')
     }
 
-
-    emit('success')
+    // Успішний вхід
+    emit('login-success', data.user)
     emit('close')
-    window.location.reload()
 
   } catch (error) {
     serverError.value = error.message || 'Сталася помилка при вході'
@@ -116,7 +112,7 @@ const handleSubmit = async () => {
   }
 }
 
-const emit = defineEmits(['close', 'success'])
+const emit = defineEmits(['close', 'login-success'])
 </script>
 
 <style scoped>
