@@ -29,19 +29,23 @@
 </template>
 
 <script setup>
-const user = ref(null)
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 const isMenuOpen = ref(false)
 
-defineEmits(['openLoginModal', 'openRegisterModal'])
-
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-const logout = () => {
-  user.value = null
-  isMenuOpen.value = false
-  navigateTo('/')
+const logout = async () => {
+  try {
+    await fetch('http://localhost:80/api/logout', {
+      method: 'POST',
+      credentials: 'include'
+    })
+    authStore.clearUser()
+    navigateTo('/')
+  } catch (error) {
+    console.error('Помилка при виході:', error)
+  }
 }
 </script>
 

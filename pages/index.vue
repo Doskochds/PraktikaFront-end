@@ -8,7 +8,9 @@
 
     <main class="flex-grow p-6 bg-white">
       <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-4 text-center">Ласкаво просимо на головну сторінку!</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center">
+          {{ welcomeMessage }}
+        </h1>
         <p class="text-lg text-gray-700 text-center">
           Цей сайт дозволить вам зберігати, ділитись та переглядати статистику щодо своїх файлів
         </p>
@@ -17,24 +19,42 @@
 
     <Footer class="mt-auto border-t border-gray-200 shadow-sm" />
 
-
     <LoginModal v-if="showLoginModal" @close="closeModals" />
     <RegistrModal v-if="showRegisterModal" @close="closeModals" />
   </div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  title: 'Головна сторінка'
-})
+import { useAuthStore } from '~/stores/auth'
 
+const authStore = useAuthStore()
 const showLoginModal = ref(false)
 const showRegisterModal = ref(false)
+
+const welcomeMessage = computed(() => {
+  return authStore.user
+      ? `Ласкаво просимо, ${authStore.user.name}!`
+      : 'Ласкаво просимо на головну сторінку!'
+})
 
 const closeModals = () => {
   showLoginModal.value = false
   showRegisterModal.value = false
 }
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:80/api/user', {
+      credentials: 'include'
+    })
+    if (response.ok) {
+      const userData = await response.json()
+      authStore.setUser(userData)
+    }
+  } catch (error) {
+    console.error('Помилка при перевірці авторизації:', error)
+  }
+})
 </script>
 
 <style scoped>

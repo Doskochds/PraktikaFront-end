@@ -13,8 +13,8 @@
               type="email"
               required
               class="form-input"
-              :class="{ 'error': errors.email }"
-          >
+              :class="{ error: errors.email }"
+          />
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
         </div>
 
@@ -26,8 +26,8 @@
               type="password"
               required
               class="form-input"
-              :class="{ 'error': errors.password }"
-          >
+              :class="{ error: errors.password }"
+          />
           <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
         </div>
 
@@ -44,6 +44,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '~/stores/auth'
+
+const authStore = useAuthStore()
+const emit = defineEmits(['close'])
 
 const form = ref({
   email: '',
@@ -60,15 +64,15 @@ const validateForm = () => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!form.value.email) {
-    errors.value.email = "Введіть email"
+    errors.value.email = 'Введіть email'
     isValid = false
   } else if (!emailRegex.test(form.value.email)) {
-    errors.value.email = "Введіть коректний email"
+    errors.value.email = 'Введіть коректний email'
     isValid = false
   }
 
   if (!form.value.password) {
-    errors.value.password = "Введіть пароль"
+    errors.value.password = 'Введіть пароль'
     isValid = false
   }
 
@@ -86,8 +90,7 @@ const handleSubmit = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         email: form.value.email,
@@ -95,24 +98,26 @@ const handleSubmit = async () => {
       })
     })
 
+
     const data = await response.json()
 
     if (!response.ok) {
-      throw new Error(data.message || 'Невірні облікові дані')
+      if (response.status === 401) {
+        errors.value.email = 'Невірний email або пароль'
+        return
+      }
+      throw new Error(data.message || 'Помилка входу')
     }
 
-    // Успішний вхід
-    emit('login-success', data.user)
+    authStore.setUser(data.user)
     emit('close')
-
   } catch (error) {
-    serverError.value = error.message || 'Сталася помилка при вході'
+    console.error('Помилка входу:', error)
+    serverError.value = error.message || 'Помилка при з’єднанні з сервером'
   } finally {
     isLoading.value = false
   }
 }
-
-const emit = defineEmits(['close', 'login-success'])
 </script>
 
 <style scoped>
