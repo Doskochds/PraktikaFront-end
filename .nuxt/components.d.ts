@@ -16,8 +16,8 @@ interface _GlobalComponents {
     'Footer': typeof import("../components/Footer.vue")['default']
     'Header': typeof import("../components/Header.vue")['default']
     'LoginModal': typeof import("../components/LoginModal.vue")['default']
-    'Maincomp': typeof import("../components/Maincomp.vue")['default']
     'RegistrModal': typeof import("../components/RegistrModal.vue")['default']
+    'FileManager': typeof import("../components/file-manager.vue")['default']
     'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
     'NuxtLayout': typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
     'NuxtErrorBoundary': typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']
@@ -45,8 +45,8 @@ interface _GlobalComponents {
     'LazyFooter': LazyComponent<typeof import("../components/Footer.vue")['default']>
     'LazyHeader': LazyComponent<typeof import("../components/Header.vue")['default']>
     'LazyLoginModal': LazyComponent<typeof import("../components/LoginModal.vue")['default']>
-    'LazyMaincomp': LazyComponent<typeof import("../components/Maincomp.vue")['default']>
     'LazyRegistrModal': LazyComponent<typeof import("../components/RegistrModal.vue")['default']>
+    'LazyFileManager': LazyComponent<typeof import("../components/file-manager.vue")['default']>
     'LazyNuxtWelcome': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
     'LazyNuxtLayout': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
     'LazyNuxtErrorBoundary': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']>
@@ -80,8 +80,8 @@ export const Files: typeof import("../components/Files.vue")['default']
 export const Footer: typeof import("../components/Footer.vue")['default']
 export const Header: typeof import("../components/Header.vue")['default']
 export const LoginModal: typeof import("../components/LoginModal.vue")['default']
-export const Maincomp: typeof import("../components/Maincomp.vue")['default']
 export const RegistrModal: typeof import("../components/RegistrModal.vue")['default']
+export const FileManager: typeof import("../components/file-manager.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']
@@ -109,8 +109,8 @@ export const LazyFiles: LazyComponent<typeof import("../components/Files.vue")['
 export const LazyFooter: LazyComponent<typeof import("../components/Footer.vue")['default']>
 export const LazyHeader: LazyComponent<typeof import("../components/Header.vue")['default']>
 export const LazyLoginModal: LazyComponent<typeof import("../components/LoginModal.vue")['default']>
-export const LazyMaincomp: LazyComponent<typeof import("../components/Maincomp.vue")['default']>
 export const LazyRegistrModal: LazyComponent<typeof import("../components/RegistrModal.vue")['default']>
+export const LazyFileManager: LazyComponent<typeof import("../components/file-manager.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary")['default']>
