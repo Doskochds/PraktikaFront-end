@@ -16,7 +16,7 @@
         </p>
 
         <!-- Якщо користувач залогінений — показуємо менеджер -->
-        <FileManager v-if="authStore.user" />
+        <FIlesManager v-if="authStore.user" />
 
         <!-- Інакше — заклик до авторизації -->
         <div v-else class="text-center mt-10">
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
-import FileManager from '~/components/file-manager.vue'
+import FIlesManager from '~/components/FIlesManager.vue'
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 import LoginModal from '~/components/LoginModal.vue'
