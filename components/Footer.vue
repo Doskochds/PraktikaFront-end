@@ -35,7 +35,7 @@ onMounted(checkApiStatus);
 
 const interval = ref();
 onMounted(() => {
-  interval.value = setInterval(checkApiStatus, 300);
+  interval.value = setInterval(checkApiStatus, 30000);
 });
 
 onBeforeUnmount(() => {

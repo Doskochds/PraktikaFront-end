@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
-import FileManager from '~/components/file-manager.vue'
+import FileManager from '~/components/FileManager.vue'
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 import LoginModal from '~/components/LoginModal.vue'
@@ -59,16 +59,19 @@ const closeModals = () => {
 }
 
 onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:80/api/user', {
-      credentials: 'include'
-    })
-    if (response.ok) {
-      const userData = await response.json()
-      authStore.setUser(userData)
+  authStore.loadUser()
+  if (!authStore.user) {
+    try {
+      const response = await fetch('http://localhost:80/api/user', {
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const userData = await response.json()
+        authStore.setUser(userData)
+      }
+    } catch (e) {
+      console.error('Не вдалося підтягнути користувача', e)
     }
-  } catch (error) {
-    console.error('Помилка при перевірці авторизації:', error)
   }
 })
 </script>
