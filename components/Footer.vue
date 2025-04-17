@@ -17,7 +17,6 @@
 <script setup lang="ts">
 const apiAvailable = ref(false);
 const loading = ref(true);
-
 const checkApiStatus = async () => {
   try {
     const response = await fetch('http://localhost:80/api/health-check');
@@ -29,15 +28,11 @@ const checkApiStatus = async () => {
     loading.value = false;
   }
 };
-
-
 onMounted(checkApiStatus);
-
 const interval = ref();
 onMounted(() => {
   interval.value = setInterval(checkApiStatus, 30000);
 });
-
 onBeforeUnmount(() => {
   clearInterval(interval.value);
 });

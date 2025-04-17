@@ -249,7 +249,7 @@ const _uTJf9UhpT3VOGUfMvL9d632UCiqKatH_7mTnNR8hc6g = (function(nitro) {
 
 const rootDir = "/home/kofr/DoskochPraktikaFront-end";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"csrf-token","content":""}],"link":[],"style":[],"script":[],"noscript":[]};
 
 const appRootTag = "div";
 

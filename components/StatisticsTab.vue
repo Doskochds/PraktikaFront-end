@@ -9,7 +9,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 defineProps({
   statistics: {
@@ -17,7 +16,6 @@ defineProps({
     required: true
   }
 })
-
 const formatKey = (key) => {
   return key
       .split('_')
@@ -25,31 +23,26 @@ const formatKey = (key) => {
       .join(' ')
 }
 </script>
-
 <style scoped>
 .statistics {
   padding: 20px;
 }
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
 }
-
 .stat-card {
   padding: 20px;
   background: #f5f5f5;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 .stat-card h3 {
   margin-top: 0;
   color: #333;
 }
-
 .stat-card p {
   font-size: 1.5rem;
   font-weight: bold;

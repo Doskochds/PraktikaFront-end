@@ -8,13 +8,13 @@ export const useAuthStore = defineStore('auth', {
         setUser(userData: any) {
             this.user = userData
             if (typeof window !== 'undefined') {
-                localStorage.setItem('user', JSON.stringify(userData)) // Зберігаємо користувача в localStorage
+                localStorage.setItem('user', JSON.stringify(userData))
             }
         },
         clearUser() {
             this.user = null
             if (typeof window !== 'undefined') {
-                localStorage.removeItem('user') // Очищаємо localStorage
+                localStorage.removeItem('user')
             }
         },
         loadUser() {

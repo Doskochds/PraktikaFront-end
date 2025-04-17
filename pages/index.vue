@@ -5,7 +5,6 @@
         @openLoginModal="showLoginModal = true"
         @openRegisterModal="showRegisterModal = true"
     />
-
     <main class="flex-grow p-6 bg-white">
       <div class="max-w-5xl mx-auto">
         <h1 class="text-3xl font-bold mb-4 text-center">
@@ -14,11 +13,7 @@
         <p class="text-lg text-gray-700 text-center mb-6">
           Цей сайт дозволить вам зберігати, ділитись та переглядати статистику щодо своїх файлів
         </p>
-
-        <!-- Якщо користувач залогінений — показуємо менеджер -->
         <FileManager v-if="authStore.user" />
-
-        <!-- Інакше — заклик до авторизації -->
         <div v-else class="text-center mt-10">
           <p class="text-gray-600 mb-4">Щоб користуватись файловим менеджером, увійдіть або зареєструйтесь</p>
           <button @click="showLoginModal = true" class="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
@@ -27,14 +22,11 @@
         </div>
       </div>
     </main>
-
     <Footer class="mt-auto border-t border-gray-200 shadow-sm" />
-
     <LoginModal v-if="showLoginModal" @close="closeModals" />
     <RegistrModal v-if="showRegisterModal" @close="closeModals" />
   </div>
 </template>
-
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
 import FileManager from '~/components/FileManager.vue'
@@ -46,18 +38,15 @@ import RegistrModal from '~/components/RegistrModal.vue'
 const authStore = useAuthStore()
 const showLoginModal = ref(false)
 const showRegisterModal = ref(false)
-
 const welcomeMessage = computed(() => {
   return authStore.user
       ? `Ласкаво просимо, ${authStore.user.name}!`
       : 'Ласкаво просимо на головну сторінку!'
 })
-
 const closeModals = () => {
   showLoginModal.value = false
   showRegisterModal.value = false
 }
-
 onMounted(async () => {
   authStore.loadUser()
   if (!authStore.user) {
@@ -82,7 +71,6 @@ h1 {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
 }
-
 main {
   padding-top: 2rem;
   padding-bottom: 4rem;

@@ -1,4 +1,3 @@
-// tabs/AllFilesTab.vue
 <template>
   <div class="all-files-section">
     <h2>Всі файли</h2>
@@ -21,11 +20,24 @@ import { ref, onMounted } from 'vue'
 const files = ref([])
 const loading = ref(true)
 const baseURL = 'http://localhost:80/api'
-
+const csrfToken = document.cookie
+    .split(';')
+    .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
+    ?.split('=')[1] || '';
 const fetchFiles = async () => {
   loading.value = true
   try {
-    const res = await fetch(`${baseURL}/files`, { credentials: 'include' })
+    const res = await fetch(`${baseURL}/files`, {
+      method: 'GET',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+    if (!res.ok) {
+      throw new Error('Помилка при отриманні файлів')
+    }
     const data = await res.json()
     files.value = data
   } catch (err) {
@@ -34,7 +46,6 @@ const fetchFiles = async () => {
     loading.value = false
   }
 }
-
 onMounted(fetchFiles)
 </script>
 
@@ -53,3 +64,4 @@ li {
   border-radius: 6px;
 }
 </style>
+

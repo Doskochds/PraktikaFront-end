@@ -1,4 +1,3 @@
-// tabs/ReportTab.vue
 <template>
   <div class="report-tab">
     <h2>Звіт по файлах</h2>
@@ -15,11 +14,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-
 const loading = ref(true)
 const stats = ref({})
 const baseURL = 'http://localhost:80/api'
-
 const fetchReport = async () => {
   loading.value = true
   try {
@@ -34,7 +31,6 @@ const fetchReport = async () => {
     loading.value = false
   }
 }
-
 onMounted(fetchReport)
 </script>
 

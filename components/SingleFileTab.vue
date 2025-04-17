@@ -1,4 +1,3 @@
-// tabs/SingleFileTab.vue
 <template>
   <div class="single-file-section">
     <h2>Перегляд одного файлу</h2>
@@ -6,7 +5,6 @@
       <input v-model="fileId" type="text" placeholder="Введіть ID файлу" required />
       <button type="submit">Знайти</button>
     </form>
-
     <div v-if="loading">Завантаження...</div>
     <div v-else-if="file">
       <h3>{{ file.original_name }}</h3>
@@ -27,7 +25,6 @@ const file = ref(null)
 const loading = ref(false)
 const error = ref(null)
 const baseURL = 'http://localhost:80/api'
-
 const fetchFile = async () => {
   loading.value = true
   error.value = null

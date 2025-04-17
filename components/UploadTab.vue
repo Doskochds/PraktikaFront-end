@@ -9,26 +9,23 @@
       </div>
       <div class="form-group">
         <label>Видалити автоматично:</label>
-        <input v-model="uploadData.delete_at" type="datetime-local" :min="minDate" />
+        <input v-model="uploadData.delete_at" type="date" :min="minDate" />
       </div>
       <button type="submit" :disabled="uploading">Завантажити</button>
     </form>
   </div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
-
 const baseURL = 'http://localhost:80/api'
 const uploading = ref(false)
 const uploadData = ref({ file: null, comment: '', delete_at: '' })
 const fileInput = ref(null)
-const minDate = new Date().toISOString().slice(0, 16)
-
+const minDate = new Date().toISOString().slice(0, 10)
+const csrfToken = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN=')).split('=')[1]
 const handleFileChange = (e) => {
   uploadData.value.file = e.target.files[0]
 }
-
 const uploadFile = async () => {
   if (!uploadData.value.file) {
     alert('Будь ласка, виберіть файл')
@@ -39,12 +36,15 @@ const uploadFile = async () => {
   formData.append('file', uploadData.value.file)
   formData.append('comment', uploadData.value.comment)
   if (uploadData.value.delete_at) {
-    formData.append('delete_at', new Date(uploadData.value.delete_at).toISOString())
+    formData.append('delete_at', new Date(uploadData.value.delete_at).toISOString().slice(0, 10)) // Залишаємо тільки дату
   }
   try {
     const response = await fetch(`${baseURL}/files`, {
       method: 'POST',
       body: formData,
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+      },
       credentials: 'include'
     })
     if (!response.ok) throw new Error('Помилка при завантаженні файлу')
@@ -59,7 +59,6 @@ const uploadFile = async () => {
   }
 }
 </script>
-
 <style scoped>
 .upload-section {
   padding: 20px;

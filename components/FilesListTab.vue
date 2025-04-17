@@ -8,7 +8,6 @@
       </button>
     </div>
 
-    <!-- Таблиця файлів -->
     <table>
       <thead>
       <tr>
