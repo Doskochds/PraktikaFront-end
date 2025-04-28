@@ -3,26 +3,33 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null as { email: string, name: string } | null,
+        token: null as string | null,
     }),
     actions: {
-        setUser(userData: any) {
+        setUser(userData: any, token: string) {
             this.user = userData
-            if (typeof window !== 'undefined') {
-                localStorage.setItem('user', JSON.stringify(userData)) // Зберігаємо користувача в localStorage
+            this.token = token
+            if (typeof window !== 'undefined') { // Перевірка на наявність localStorage
+                localStorage.setItem('user', JSON.stringify(userData))
+                localStorage.setItem('token', token)
             }
         },
         clearUser() {
             this.user = null
-            if (typeof window !== 'undefined') {
-                localStorage.removeItem('user') // Очищаємо localStorage
+            this.token = null
+            if (typeof window !== 'undefined') { // Перевірка на наявність localStorage
+                localStorage.removeItem('user')
+                localStorage.removeItem('token')
             }
         },
         loadUser() {
-            if (typeof window !== 'undefined') {
+            if (typeof window !== 'undefined') { // Перевірка на наявність localStorage
                 const userData = localStorage.getItem('user')
+                const token = localStorage.getItem('token')
                 if (userData) {
                     this.user = JSON.parse(userData)
                 }
+                this.token = token
             }
         }
     }

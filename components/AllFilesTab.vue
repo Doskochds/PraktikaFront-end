@@ -1,4 +1,3 @@
-// tabs/AllFilesTab.vue
 <template>
   <div class="all-files-section">
     <h2>Всі файли</h2>
@@ -17,15 +16,33 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from '~/stores/auth'
 
 const files = ref([])
 const loading = ref(true)
 const baseURL = 'http://localhost:80/api'
+const authStore = useAuthStore()
 
 const fetchFiles = async () => {
   loading.value = true
   try {
-    const res = await fetch(`${baseURL}/files`, { credentials: 'include' })
+    // Отримуємо токен з Pinia
+    const token = authStore.token
+    const headers = new Headers({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    })
+
+    const res = await fetch(`${baseURL}/files`, {
+      method: 'GET',
+      headers,
+      credentials: 'include'
+    })
+
+    if (!res.ok) {
+      throw new Error('Не вдалося завантажити файли')
+    }
+
     const data = await res.json()
     files.value = data
   } catch (err) {
@@ -53,3 +70,5 @@ li {
   border-radius: 6px;
 }
 </style>
+
+

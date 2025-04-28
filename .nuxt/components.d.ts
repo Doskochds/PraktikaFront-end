@@ -13,13 +13,17 @@ type HydrationStrategies = {
 type LazyComponent<T> = (T & DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }>)
 interface _GlobalComponents {
       'AllFilesTab': typeof import("../components/AllFilesTab.vue")['default']
+    'FIlesManager': typeof import("../components/FIlesManager.vue")['default']
     'FileManager': typeof import("../components/FileManager.vue")['default']
+    'FileViewTab': typeof import("../components/FileViewTab.vue")['default']
+    'FilesListTab': typeof import("../components/FilesListTab.vue")['default']
     'Footer': typeof import("../components/Footer.vue")['default']
     'Header': typeof import("../components/Header.vue")['default']
     'LoginModal': typeof import("../components/LoginModal.vue")['default']
     'RegistrModal': typeof import("../components/RegistrModal.vue")['default']
     'ReportTab': typeof import("../components/ReportTab.vue")['default']
     'SingleFileTab': typeof import("../components/SingleFileTab.vue")['default']
+    'StatisticsTab': typeof import("../components/StatisticsTab.vue")['default']
     'UploadTab': typeof import("../components/UploadTab.vue")['default']
     'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
     'NuxtLayout': typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -45,13 +49,17 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyAllFilesTab': LazyComponent<typeof import("../components/AllFilesTab.vue")['default']>
+    'LazyFIlesManager': LazyComponent<typeof import("../components/FIlesManager.vue")['default']>
     'LazyFileManager': LazyComponent<typeof import("../components/FileManager.vue")['default']>
+    'LazyFileViewTab': LazyComponent<typeof import("../components/FileViewTab.vue")['default']>
+    'LazyFilesListTab': LazyComponent<typeof import("../components/FilesListTab.vue")['default']>
     'LazyFooter': LazyComponent<typeof import("../components/Footer.vue")['default']>
     'LazyHeader': LazyComponent<typeof import("../components/Header.vue")['default']>
     'LazyLoginModal': LazyComponent<typeof import("../components/LoginModal.vue")['default']>
     'LazyRegistrModal': LazyComponent<typeof import("../components/RegistrModal.vue")['default']>
     'LazyReportTab': LazyComponent<typeof import("../components/ReportTab.vue")['default']>
     'LazySingleFileTab': LazyComponent<typeof import("../components/SingleFileTab.vue")['default']>
+    'LazyStatisticsTab': LazyComponent<typeof import("../components/StatisticsTab.vue")['default']>
     'LazyUploadTab': LazyComponent<typeof import("../components/UploadTab.vue")['default']>
     'LazyNuxtWelcome': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
     'LazyNuxtLayout': LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
@@ -83,13 +91,17 @@ declare module 'vue' {
 }
 
 export const AllFilesTab: typeof import("../components/AllFilesTab.vue")['default']
+export const FIlesManager: typeof import("../components/FIlesManager.vue")['default']
 export const FileManager: typeof import("../components/FileManager.vue")['default']
+export const FileViewTab: typeof import("../components/FileViewTab.vue")['default']
+export const FilesListTab: typeof import("../components/FilesListTab.vue")['default']
 export const Footer: typeof import("../components/Footer.vue")['default']
 export const Header: typeof import("../components/Header.vue")['default']
 export const LoginModal: typeof import("../components/LoginModal.vue")['default']
 export const RegistrModal: typeof import("../components/RegistrModal.vue")['default']
 export const ReportTab: typeof import("../components/ReportTab.vue")['default']
 export const SingleFileTab: typeof import("../components/SingleFileTab.vue")['default']
+export const StatisticsTab: typeof import("../components/StatisticsTab.vue")['default']
 export const UploadTab: typeof import("../components/UploadTab.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -115,13 +127,17 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyAllFilesTab: LazyComponent<typeof import("../components/AllFilesTab.vue")['default']>
+export const LazyFIlesManager: LazyComponent<typeof import("../components/FIlesManager.vue")['default']>
 export const LazyFileManager: LazyComponent<typeof import("../components/FileManager.vue")['default']>
+export const LazyFileViewTab: LazyComponent<typeof import("../components/FileViewTab.vue")['default']>
+export const LazyFilesListTab: LazyComponent<typeof import("../components/FilesListTab.vue")['default']>
 export const LazyFooter: LazyComponent<typeof import("../components/Footer.vue")['default']>
 export const LazyHeader: LazyComponent<typeof import("../components/Header.vue")['default']>
 export const LazyLoginModal: LazyComponent<typeof import("../components/LoginModal.vue")['default']>
 export const LazyRegistrModal: LazyComponent<typeof import("../components/RegistrModal.vue")['default']>
 export const LazyReportTab: LazyComponent<typeof import("../components/ReportTab.vue")['default']>
 export const LazySingleFileTab: LazyComponent<typeof import("../components/SingleFileTab.vue")['default']>
+export const LazyStatisticsTab: LazyComponent<typeof import("../components/StatisticsTab.vue")['default']>
 export const LazyUploadTab: LazyComponent<typeof import("../components/UploadTab.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>

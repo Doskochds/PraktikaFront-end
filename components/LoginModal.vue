@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
 const authStore = useAuthStore()
@@ -57,25 +57,6 @@ const form = ref({
 const errors = ref({})
 const isLoading = ref(false)
 const serverError = ref('')
-const csrfToken = ref('')
-
-// Отримуємо CSRF токен перед спробою логіну
-onMounted(async () => {
-  await fetchCSRFToken()
-})
-
-const fetchCSRFToken = async () => {
-  try {
-    const response = await fetch('http://localhost:80/api/sanctum/csrf-cookie', {
-      method: 'GET',
-      credentials: 'include', // Для коректної роботи з cookies
-    })
-    if (!response.ok) throw new Error('Не вдалося отримати CSRF токен')
-    csrfToken.value = await response.json()
-  } catch (error) {
-    serverError.value = error.message || 'Помилка при отриманні CSRF токену'
-  }
-}
 
 const validateForm = () => {
   errors.value = {}
@@ -115,7 +96,6 @@ const handleSubmit = async () => {
         email: form.value.email,
         password: form.value.password
       }),
-      credentials: 'include', // Це обов'язково для роботи з cookies
     })
 
     const data = await response.json()
@@ -128,16 +108,18 @@ const handleSubmit = async () => {
       throw new Error(data.message || 'Помилка входу')
     }
 
+    localStorage.setItem('auth_token', data.token)
     authStore.setUser(data.user)
+
     emit('close')
   } catch (error) {
-    console.error('Помилка входу:', error)
     serverError.value = error.message || 'Помилка при з’єднанні з сервером'
   } finally {
     isLoading.value = false
   }
 }
 </script>
+
 <style scoped>
 .modal-overlay {
   position: fixed;
