@@ -34,7 +34,6 @@ import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 import LoginModal from '~/components/LoginModal.vue'
 import RegistrModal from '~/components/RegistrModal.vue'
-
 const authStore = useAuthStore()
 const showLoginModal = ref(false)
 const showRegisterModal = ref(false)
@@ -54,20 +53,19 @@ onMounted(async () => {
       const response = await fetch('http://localhost:80/api/user', {
         credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${authStore.token}`, // Додаємо токен до заголовка
+          'Authorization': `Bearer ${authStore.token}`,
         },
       })
       if (response.ok) {
         const userData = await response.json()
-        authStore.setUser(userData, authStore.token!) // Зберігаємо користувача та токен
+        authStore.setUser(userData, authStore.token!)
       }
     } catch (e) {
-      console.error('Не вдалося підтягнути користувача', e)
+      console.error('Не вийшло знайти користувача', e)
     }
   }
 })
 </script>
-
 <style scoped>
 h1 {
   color: #42b983;
