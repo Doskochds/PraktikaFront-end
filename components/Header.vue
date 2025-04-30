@@ -28,7 +28,6 @@
 
 <script setup>
 import { useAuthStore } from '~/stores/auth'
-
 const authStore = useAuthStore()
 const user = computed(() => authStore.user)
 const isMenuOpen = ref(false)

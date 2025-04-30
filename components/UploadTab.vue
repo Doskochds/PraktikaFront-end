@@ -2,29 +2,41 @@
   <div class="upload-section">
     <h2>Завантажити файл</h2>
     <form @submit.prevent="uploadFile" class="upload-form">
-      <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*,.ai,.cdr,.svg,.wmf,.emf" />
+      <input
+          type="file"
+          ref="fileInput"
+          @change="handleFileChange"
+          accept="image/*,.ai,.cdr,.svg,.wmf,.emf"
+      />
       <div class="form-group">
         <label>Коментар (необов'язково):</label>
         <input v-model="uploadData.comment" type="text" maxlength="255" />
       </div>
       <div class="form-group">
         <label>Видалити автоматично:</label>
-        <input v-model="uploadData.delete_at" type="date" :min="minDate" />
+        <input v-model="uploadData.delete_at" type="datetime-local" :min="minDate" />
       </div>
       <button type="submit" :disabled="uploading">Завантажити</button>
     </form>
   </div>
 </template>
-<script setup>
+
+<script setup lang="ts">
 import { ref } from 'vue'
-const baseURL = 'http://localhost:80/api'
+const baseURL = 'http://localhost:80'
 const uploading = ref(false)
-const uploadData = ref({ file: null, comment: '', delete_at: '' })
-const fileInput = ref(null)
-const minDate = new Date().toISOString().slice(0, 10)
-const csrfToken = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN=')).split('=')[1]
-const handleFileChange = (e) => {
-  uploadData.value.file = e.target.files[0]
+const uploadData = ref<{ file: File | null; comment: string; delete_at: string }>({
+  file: null,
+  comment: '',
+  delete_at: ''
+})
+const fileInput = ref<HTMLInputElement | null>(null)
+const minDate = new Date().toISOString().slice(0, 16)
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  if (target.files?.length) {
+    uploadData.value.file = target.files[0]
+  }
 }
 const uploadFile = async () => {
   if (!uploadData.value.file) {
@@ -36,29 +48,41 @@ const uploadFile = async () => {
   formData.append('file', uploadData.value.file)
   formData.append('comment', uploadData.value.comment)
   if (uploadData.value.delete_at) {
-    formData.append('delete_at', new Date(uploadData.value.delete_at).toISOString().slice(0, 10)) // Залишаємо тільки дату
+    formData.append('delete_at', new Date(uploadData.value.delete_at).toISOString())
   }
   try {
-    const response = await fetch(`${baseURL}/files`, {
+    await fetch(`${baseURL}/sanctum/csrf-cookie`, { credentials: 'include' })
+    const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
+    if (!xsrfToken) {
+      throw new Error('Не вдалося отримати CSRF токен')
+    }
+    const response = await fetch(`${baseURL}/api/files`, {
       method: 'POST',
       body: formData,
+      credentials: 'include',
       headers: {
-        'X-CSRF-TOKEN': csrfToken,
+        'X-XSRF-TOKEN': decodeURIComponent(xsrfToken),
       },
-      credentials: 'include'
     })
-    if (!response.ok) throw new Error('Помилка при завантаженні файлу')
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.message || 'Помилка при завантаженні файлу')
+    }
     const data = await response.json()
     alert(data.message)
-    fileInput.value.value = ''
+    if (fileInput.value) fileInput.value.value = ''
     uploadData.value = { file: null, comment: '', delete_at: '' }
-  } catch (error) {
-    alert(error.message)
+  } catch (error: any) {
+    alert(error.message || 'Сталася невідома помилка')
   } finally {
     uploading.value = false
   }
 }
 </script>
+
 <style scoped>
 .upload-section {
   padding: 20px;

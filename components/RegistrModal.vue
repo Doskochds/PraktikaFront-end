@@ -65,7 +65,6 @@
 
 <script setup>
 import { ref } from 'vue'
-
 const form = ref({
   name: '',
   email: '',
@@ -79,7 +78,7 @@ const successMessage = ref('')
 const validateForm = () => {
   errors.value = {}
   let isValid = true
-  if (!form.value.name.trim()) {
+   if (!form.value.name.trim()) {
     errors.value.name = "Введіть ім'я"
     isValid = false
   } else if (form.value.name.length < 3) {
@@ -94,7 +93,7 @@ const validateForm = () => {
     errors.value.email = "Введіть коректний email"
     isValid = false
   }
-  if (!form.value.password) {
+    if (!form.value.password) {
     errors.value.password = "Введіть пароль"
     isValid = false
   } else if (form.value.password.length < 6) {
@@ -107,13 +106,11 @@ const validateForm = () => {
   }
   return isValid
 }
-
 const handleSubmit = async () => {
   if (!validateForm()) return;
   isLoading.value = true;
   serverError.value = '';
   successMessage.value = '';
-
   try {
     const dataToSend = {
       name: form.value.name,
@@ -132,7 +129,6 @@ const handleSubmit = async () => {
     if (!response.ok) {
       throw new Error(data.message || 'Помилка реєстрації');
     }
-
     successMessage.value = 'Реєстрація успішна! Можете увійти.';
     form.value = {
       name: '',
@@ -140,7 +136,6 @@ const handleSubmit = async () => {
       password: '',
       password_confirm: ''
     };
-
     setTimeout(() => {
       emit('close');
     }, 2000);

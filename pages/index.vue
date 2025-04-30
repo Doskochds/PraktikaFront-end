@@ -53,10 +53,13 @@ onMounted(async () => {
     try {
       const response = await fetch('http://localhost:80/api/user', {
         credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`, // Додаємо токен до заголовка
+        },
       })
       if (response.ok) {
         const userData = await response.json()
-        authStore.setUser(userData)
+        authStore.setUser(userData, authStore.token!) // Зберігаємо користувача та токен
       }
     } catch (e) {
       console.error('Не вдалося підтягнути користувача', e)
