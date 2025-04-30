@@ -1,55 +1,104 @@
 <template>
   <div class="all-files-section">
     <h2>Всі файли</h2>
+
     <div v-if="loading">Завантаження...</div>
-    <ul v-else>
-      <li v-for="file in files" :key="file.id">
-        <strong>{{ file.original_name }}</strong> ({{ file.size_kb }} КБ)
-        <br />
+
+    <div v-else>
+      <div
+          v-for="file in files"
+          :key="file.id"
+          class="file-card"
+      >
+        <strong>{{ file.file_name }}</strong><br />
         Коментар: {{ file.comment || '—' }}<br />
         Завантажено: {{ new Date(file.created_at).toLocaleString() }}<br />
-        Видалення: {{ file.delete_at ? new Date(file.delete_at).toLocaleString() : 'не вказано' }}
-      </li>
-    </ul>
+        Видалення: {{ file.delete_at ? new Date(file.delete_at).toLocaleString() : 'не вказано' }}<br />
+        Переглядів: {{ file.views ?? 0 }}
+
+        <div class="file-actions">
+          <!-- Змінили тут, щоб перенаправити за ID файлу -->
+          <button @click="goToFile(file.id)">Переглянути</button>
+          <button @click="deleteFile(file.id)">Видалити</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useAuthStore } from '~/stores/auth'
+import { useRouter } from 'vue-router'
 
 const files = ref([])
 const loading = ref(true)
-const baseURL = 'http://localhost:80/api'
-const authStore = useAuthStore()
+const baseURL = 'http://localhost:80'
+const router = useRouter()
 
 const fetchFiles = async () => {
   loading.value = true
   try {
-    // Отримуємо токен з Pinia
-    const token = authStore.token
-    const headers = new Headers({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+    await fetch(`${baseURL}/sanctum/csrf-cookie`, {
+      credentials: 'include',
     })
 
-    const res = await fetch(`${baseURL}/files`, {
+    const res = await fetch(`${baseURL}/api/files`, {
       method: 'GET',
-      headers,
-      credentials: 'include'
+      credentials: 'include',
     })
 
-    if (!res.ok) {
-      throw new Error('Не вдалося завантажити файли')
-    }
+    if (!res.ok) throw new Error('Не вдалося завантажити файли')
 
     const data = await res.json()
-    files.value = data
+    files.value = data.files // 👈 важливо!
   } catch (err) {
     console.error('Помилка при отриманні файлів:', err)
   } finally {
     loading.value = false
   }
+}
+
+const deleteFile = async (id) => {
+  if (!confirm('Ви дійсно хочете видалити цей файл?')) return
+
+  try {
+    // Отримання CSRF токену з cookie
+    const xsrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1]
+
+    // Створення заголовків для запиту
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+    })
+
+    // Додавання токену в заголовки, якщо він знайдений
+    if (xsrfToken) {
+      headers.append('X-XSRF-TOKEN', decodeURIComponent(xsrfToken))
+    }
+
+    // Запит на видалення файлу
+    const res = await fetch(`${baseURL}/api/files/${id}`, {
+      method: 'DELETE',
+      headers: headers, // Додаємо CSRF токен у заголовки
+      credentials: 'include', // Завжди включаємо cookies
+    })
+
+    if (!res.ok) throw new Error('Помилка при видаленні файлу')
+
+    // Оновлення списку файлів після видалення
+    files.value = files.value.filter(f => f.id !== id)
+    alert('Файл видалено')
+  } catch (err) {
+    alert('Помилка: ' + err.message)
+  }
+}
+
+
+const goToFile = (id) => {
+  // Змінили на пряме посилання на файл
+  window.location.href = `http://localhost/file/${id}`
 }
 
 onMounted(fetchFiles)
@@ -59,16 +108,20 @@ onMounted(fetchFiles)
 .all-files-section {
   padding: 20px;
 }
-ul {
-  list-style: none;
-  padding: 0;
+.file-card {
+  border: 2px solid #cbd5e1;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #f1f5f9;
 }
-li {
-  margin-bottom: 15px;
-  background: #e2e8f0;
-  padding: 10px;
-  border-radius: 6px;
+.file-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+button {
+  padding: 6px 12px;
+  cursor: pointer;
 }
 </style>
-
-

@@ -3,21 +3,25 @@
     <button @click="$emit('back')" class="back-button">← Назад до списку</button>
 
     <div class="file-info">
-      <h3>{{ file.original_name }}</h3>
+      <h3>{{ file.file_name }}</h3>
       <p v-if="file.comment"><strong>Коментар:</strong> {{ file.comment }}</p>
       <p><strong>Дата завантаження:</strong> {{ formatDate(file.created_at) }}</p>
       <p v-if="file.delete_at"><strong>Видалити:</strong> {{ formatDate(file.delete_at) }}</p>
     </div>
 
     <div class="file-preview">
-      <iframe
-          v-if="isImage(file.original_name)"
-          :src="`http://localhost:80/api/files/view/${file.id}`"
-          frameborder="0"
-      ></iframe>
-      <div v-else class="unsupported-format">
-        Попередній перегляд недоступний для цього типу файлу
-      </div>
+      <template v-if="isImage(file.file_name)">
+        <img
+            :src="`http://localhost:80/api/files/view/${file.id}`"
+            alt="File preview"
+            class="image-preview"
+        />
+      </template>
+      <template v-else>
+        <div class="unsupported-format">
+          Попередній перегляд недоступний для цього типу файлу
+        </div>
+      </template>
     </div>
 
     <div class="file-actions">
@@ -51,19 +55,24 @@ const props = defineProps({
 const emit = defineEmits(['back'])
 
 const generatedLinks = ref([])
+
+// Форматування дати
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString()
 }
 
+// Перевірка на формат зображення
 const isImage = (filename) => {
   const ext = filename.split('.').pop().toLowerCase()
   return ['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(ext)
 }
 
+// Завантаження файлу
 const downloadFile = (fileId) => {
   window.open(`http://localhost:80/api/files/download/${fileId}`, '_blank')
 }
 
+// Генерація одноразових посилань
 const generateLinks = async () => {
   try {
     const response = await fetch(`http://localhost:80/api/files/${props.file.id}/generate-links`, {
@@ -76,12 +85,15 @@ const generateLinks = async () => {
     })
 
     const data = await response.json()
+
+    // Визначення посилань на основі відповіді від API
     generatedLinks.value = data.urls.map(url => `${window.location.origin}/links/${url.token}`)
   } catch (error) {
     alert('Помилка при генерації посилань: ' + error.message)
   }
 }
 
+// Копіювання посилання в буфер обміну
 const copyLink = (link) => {
   navigator.clipboard.writeText(link)
   alert('Посилання скопійовано в буфер обміну')
@@ -115,9 +127,9 @@ const copyLink = (link) => {
   min-height: 500px;
 }
 
-.file-preview iframe {
+.image-preview {
   width: 100%;
-  height: 500px;
+  height: auto;
 }
 
 .unsupported-format {
