@@ -13,10 +13,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = (T & DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }>)
 interface _GlobalComponents {
       'AllFilesTab': typeof import("../components/AllFilesTab.vue")['default']
-    'FIlesManager': typeof import("../components/FIlesManager.vue")['default']
     'FileManager': typeof import("../components/FileManager.vue")['default']
-    'FileViewTab': typeof import("../components/FileViewTab.vue")['default']
-    'FilesListTab': typeof import("../components/FilesListTab.vue")['default']
     'Footer': typeof import("../components/Footer.vue")['default']
     'Header': typeof import("../components/Header.vue")['default']
     'LoginModal': typeof import("../components/LoginModal.vue")['default']
@@ -49,10 +46,7 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyAllFilesTab': LazyComponent<typeof import("../components/AllFilesTab.vue")['default']>
-    'LazyFIlesManager': LazyComponent<typeof import("../components/FIlesManager.vue")['default']>
     'LazyFileManager': LazyComponent<typeof import("../components/FileManager.vue")['default']>
-    'LazyFileViewTab': LazyComponent<typeof import("../components/FileViewTab.vue")['default']>
-    'LazyFilesListTab': LazyComponent<typeof import("../components/FilesListTab.vue")['default']>
     'LazyFooter': LazyComponent<typeof import("../components/Footer.vue")['default']>
     'LazyHeader': LazyComponent<typeof import("../components/Header.vue")['default']>
     'LazyLoginModal': LazyComponent<typeof import("../components/LoginModal.vue")['default']>
@@ -91,10 +85,7 @@ declare module 'vue' {
 }
 
 export const AllFilesTab: typeof import("../components/AllFilesTab.vue")['default']
-export const FIlesManager: typeof import("../components/FIlesManager.vue")['default']
 export const FileManager: typeof import("../components/FileManager.vue")['default']
-export const FileViewTab: typeof import("../components/FileViewTab.vue")['default']
-export const FilesListTab: typeof import("../components/FilesListTab.vue")['default']
 export const Footer: typeof import("../components/Footer.vue")['default']
 export const Header: typeof import("../components/Header.vue")['default']
 export const LoginModal: typeof import("../components/LoginModal.vue")['default']
@@ -127,10 +118,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyAllFilesTab: LazyComponent<typeof import("../components/AllFilesTab.vue")['default']>
-export const LazyFIlesManager: LazyComponent<typeof import("../components/FIlesManager.vue")['default']>
 export const LazyFileManager: LazyComponent<typeof import("../components/FileManager.vue")['default']>
-export const LazyFileViewTab: LazyComponent<typeof import("../components/FileViewTab.vue")['default']>
-export const LazyFilesListTab: LazyComponent<typeof import("../components/FilesListTab.vue")['default']>
 export const LazyFooter: LazyComponent<typeof import("../components/Footer.vue")['default']>
 export const LazyHeader: LazyComponent<typeof import("../components/Header.vue")['default']>
 export const LazyLoginModal: LazyComponent<typeof import("../components/LoginModal.vue")['default']>

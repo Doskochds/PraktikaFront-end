@@ -1,9 +1,7 @@
 <template>
   <div class="all-files-section">
     <h2>Всі файли</h2>
-
     <div v-if="loading">Завантаження...</div>
-
     <div v-else>
       <div
           v-for="file in files"
@@ -15,9 +13,7 @@
         Завантажено: {{ new Date(file.created_at).toLocaleString() }}<br />
         Видалення: {{ file.delete_at ? new Date(file.delete_at).toLocaleString() : 'не вказано' }}<br />
         Переглядів: {{ file.views ?? 0 }}
-
         <div class="file-actions">
-          <!-- Змінили тут, щоб перенаправити за ID файлу -->
           <button @click="goToFile(file.id)">Переглянути</button>
           <button @click="deleteFile(file.id)">Видалити</button>
         </div>
@@ -29,26 +25,21 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
 const files = ref([])
 const loading = ref(true)
 const baseURL = 'http://localhost:80'
 const router = useRouter()
-
 const fetchFiles = async () => {
   loading.value = true
   try {
     await fetch(`${baseURL}/sanctum/csrf-cookie`, {
       credentials: 'include',
     })
-
     const res = await fetch(`${baseURL}/api/files`, {
       method: 'GET',
       credentials: 'include',
     })
-
     if (!res.ok) throw new Error('Не вдалося завантажити файли')
-
     const data = await res.json()
     files.value = data.files // 👈 важливо!
   } catch (err) {
@@ -57,50 +48,34 @@ const fetchFiles = async () => {
     loading.value = false
   }
 }
-
 const deleteFile = async (id) => {
   if (!confirm('Ви дійсно хочете видалити цей файл?')) return
-
   try {
-    // Отримання CSRF токену з cookie
     const xsrfToken = document.cookie
         .split('; ')
         .find(row => row.startsWith('XSRF-TOKEN='))
         ?.split('=')[1]
-
-    // Створення заголовків для запиту
     const headers = new Headers({
       'Content-Type': 'application/json',
     })
-
-    // Додавання токену в заголовки, якщо він знайдений
     if (xsrfToken) {
       headers.append('X-XSRF-TOKEN', decodeURIComponent(xsrfToken))
     }
-
-    // Запит на видалення файлу
     const res = await fetch(`${baseURL}/api/files/${id}`, {
       method: 'DELETE',
-      headers: headers, // Додаємо CSRF токен у заголовки
-      credentials: 'include', // Завжди включаємо cookies
+      headers: headers,
+      credentials: 'include',
     })
-
     if (!res.ok) throw new Error('Помилка при видаленні файлу')
-
-    // Оновлення списку файлів після видалення
     files.value = files.value.filter(f => f.id !== id)
     alert('Файл видалено')
   } catch (err) {
     alert('Помилка: ' + err.message)
   }
 }
-
-
 const goToFile = (id) => {
-  // Змінили на пряме посилання на файл
   window.location.href = `http://localhost/file/${id}`
 }
-
 onMounted(fetchFiles)
 </script>
 
