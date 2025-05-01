@@ -12,7 +12,6 @@
               <span class="chevron" :class="{ 'open': isMenuOpen }">▼</span>
             </button>
             <div v-if="isMenuOpen" class="dropdown">
-              <NuxtLink to="/profile" class="dropdown-item">Профіль</NuxtLink>
               <button @click="logout" class="dropdown-item">Вийти</button>
             </div>
           </div>
@@ -31,6 +30,9 @@ import { useAuthStore } from '~/stores/auth'
 const authStore = useAuthStore()
 const user = computed(() => authStore.user)
 const isMenuOpen = ref(false)
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
 const logout = async () => {
   try {
     await fetch('http://localhost:80/api/logout', {
